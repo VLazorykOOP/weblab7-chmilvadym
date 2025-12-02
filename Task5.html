@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Вар 3</title>
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+
+    <script>
+      function searchInfo() {
+        const text = document.getElementById("inputText").value;
+        const out = document.getElementById("result");
+
+        let res = "";
+
+        // 5.1 кількість слів
+        const words = text.trim().match(/\b\w+\b/g);
+        res += "Кількість слів: " + (words ? words.length : 0) + "\n";
+
+        // 5.2 слова що починаються з "е" і закінчуються "а"
+        const pattern = /\bе\w*а\b/gi;
+        const found = text.match(pattern);
+        res += "Слова, що починаються 'е' і закінчуються 'а':\n";
+        if (found) {
+          for (let w of found) res += w + "\n";
+        } else {
+          res += "Немає\n";
+        }
+
+        // 5.3 кількість цифр
+        const digits = text.match(/\d/g);
+        res += "\nКількість цифр: " + (digits ? digits.length : 0) + "\n";
+
+        // 5.4 цілі числа
+        const intNumbers = text.match(/\b\d+\b/g);
+        res += "\nЦілі числа в тексті:\n";
+        if (intNumbers) {
+          for (let n of intNumbers) res += n + "\n";
+        } else {
+          res += "Немає\n";
+        }
+
+        out.value = res;
+      }
+    </script>
+  </head>
+  <body>
+    <form>
+      <textarea
+        id="inputText"
+        rows="6"
+        cols="40"
+        placeholder="Введіть текст"
+      ></textarea
+      ><br /><br />
+      <button type="button" onclick="searchInfo()">Пошук інформації</button
+      ><br /><br />
+      <textarea
+        id="result"
+        rows="12"
+        cols="40"
+        placeholder="Результат"
+      ></textarea>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BOM / DOM інформація</title>
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <style>
+      body {
+        background-color: #d3d3d3; /* светло-серый фон */
+        font-family: Arial, sans-serif;
+        padding: 30px;
+        color: #000;
+        text-align: center; /* выравнивание всех элементов по центру */
+      }
+
+      h1 {
+        font-size: 36px;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      #f1,
+      #f2 {
+        border: 2px solid #555;
+        border-radius: 8px;
+        padding: 15px;
+        width: 250px;
+        margin: 10px auto;
+        background-color: #f0f0f0;
+        font-weight: bold;
+      }
+
+      button {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+        display: inline-block;
+        margin: 15px auto;
+      }
+
+      button:hover {
+        background-color: #fff;
+        color: #333;
+        border: 1px solid #333;
+      }
+
+      textarea {
+        display: block;
+        margin: 15px auto;
+        width: 90%;
+        max-width: 600px;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #555;
+        font-family: monospace;
+        font-size: 14px;
+        background-color: #f9f9f9;
+        color: #000;
+      }
+
+      a {
+        display: block;
+        margin-top: 10px;
+        color: #333;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      a:hover {
+        color: #555;
+      }
+
+      img {
+        display: block;
+        margin: 20px auto;
+        max-width: 300px;
+        border-radius: 8px;
+        border: 1px solid #555;
+      }
+    </style>
+
+    <script>
+      function runTask() {
+        let textarea = document.getElementById("out");
+
+        let data = "";
+
+        data += "Браузер: " + navigator.userAgent + "\n";
+        data += "Кількість записів в історії: " + history.length + "\n";
+        data += "URL: " + location.href + "\n";
+        data += "Протокол: " + location.protocol + "\n";
+        data += "Хост: " + location.host + "\n";
+        data += "Час відкриття сторінки: " + new Date().toLocaleString() + "\n";
+
+        data += "\nВластивості document:\n";
+        for (let prop in document) {
+          data += prop + "\n";
+        }
+
+        data += "\nКількість форм: " + document.forms.length + "\n";
+
+        document.getElementById("f1").innerHTML = "Фрейм 1 змінено!";
+        document.getElementById("f2").innerHTML = "Фрейм 2 змінено!";
+        data += "Фрейми оновлено ✅\n";
+
+        data += "\nПосилання (links):\n";
+        for (let i = 0; i < document.links.length; i++) {
+          data += document.links[i].href + "\n";
+        }
+
+        data += "\nЗображення (images): " + document.images.length + "\n";
+
+        data += "\nЕлементи форми:\n";
+        if (document.forms[0]) {
+          for (let el of document.forms[0].elements) {
+            data += el.tagName + " | name=" + el.name + "\n";
+          }
+        } else {
+          data += "Форм немає\n";
+        }
+
+        data += "\nРозробник: LINA\n";
+
+        textarea.value = data;
+      }
+    </script>
+  </head>
+  <body>
+    <h1>BOM / DOM інформація</h1>
+
+    <div id="f1">Frame 1</div>
+    <div id="f2">Frame 2</div>
+
+    <form>
+      <button type="button" onclick="runTask()">Run Task</button>
+      <textarea id="out" rows="15" placeholder="Тут буде результат"></textarea>
+    </form>
+
+    <a href="#test">Тестове посилання</a>
+    <img src="Ы.jpg" alt="test-img" />
+  </body>
+</html>

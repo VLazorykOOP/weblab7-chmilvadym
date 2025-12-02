@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Обробка подій BODY</title>
+    <style>
+      #log {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 10px;
+        max-height: 300px;
+        overflow-y: auto;
+        background: #f9f9f9;
+      }
+      button {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body
+    onbeforeonload="log('onbeforeonload: Сторінка скоро завантажиться')"
+    onload="log('onload: Сторінка завантажена')"
+    onunload="log('onunload: Ви покидаєте сторінку')"
+    onbeforeprint="log('onbeforeprint: Сторінку готують до друку')"
+    onafterprint="log('onafterprint: Сторінку надруковано')"
+    onblur="log('onblur: Вікно втратило фокус')"
+    onfocus="log('onfocus: Вікно отримало фокус')"
+    onerror="log('onerror: Виникла помилка')"
+    onhaschange="log('onhaschange: Документ змінився')"
+    onmessage="log('onmessage: Прийшло повідомлення')"
+    onoffline="log('onoffline: Відключено від мережі')"
+    ononline="log('ononline: Підключено до мережі')"
+  >
+    <h1>Lab7</h1>
+
+    <p>Повідомлення про події з'являються нижче:</p>
+    <div id="log"></div>
+
+    <button onclick="throwError()">Ошибка</button>
+    <button onclick="simulateMessage()">Симулювати повідомлення</button>
+
+    <script>
+      function log(message) {
+        const logDiv = document.getElementById("log");
+        const p = document.createElement("p");
+        p.textContent = message;
+        logDiv.appendChild(p);
+      }
+
+      function throwError() {
+        // Викликаємо помилку
+        nonExistentFunction();
+      }
+
+      function simulateMessage() {
+        // Викликаємо подію onmessage
+        window.dispatchEvent(
+          new MessageEvent("message", { data: "Тестове повідомлення" })
+        );
+      }
+
+      // Додаємо обробник для onmessage, щоб спрацював log
+      window.addEventListener("message", function (e) {
+        log("onmessage: Прийшло повідомлення - " + e.data);
+      });
+
+      // Для onhaschange (приклад зміни документа)
+      setTimeout(() => {
+        document.body.innerHTML += "<p>Документ змінився автоматично</p>";
+        const event = new Event("haschange");
+        document.body.dispatchEvent(event);
+      }, 3000);
+
+      // Додаємо обробник на подію haschange
+      document.body.addEventListener("haschange", function () {
+        log("onhaschange: Документ змінився");
+      });
+    </script>
+  </body>
+</html>

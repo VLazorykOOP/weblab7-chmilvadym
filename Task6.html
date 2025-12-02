@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Вар 3</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      #output {
+        white-space: pre-line;
+        margin-top: 10px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Варіант 3</h2>
+
+    <button id="arrayTask">Array Task</button>
+
+    <div id="output"></div>
+
+    <script>
+      document.getElementById("arrayTask").onclick = function () {
+        const N = 10;
+        const A = [];
+        for (let i = 0; i < N; i++) {
+          A.push(Math.floor(Math.random() * 21) - 10); // від -10 до 10
+        }
+
+        let minPositive = null;
+        let index = -1;
+        for (let i = 0; i < A.length; i++) {
+          if (A[i] > 0 && (minPositive === null || A[i] < minPositive)) {
+            minPositive = A[i];
+            index = i;
+          }
+        }
+
+        let result = "Масив A: " + A.join(", ") + "\n";
+        if (minPositive !== null) {
+          result += "Мінімальний додатній елемент: " + minPositive + "\n";
+          result += "Індекс: " + index;
+        } else {
+          result += "Додатніх елементів немає.";
+        }
+
+        document.getElementById("output").textContent = result;
+
+        console.log(result);
+      };
+    </script>
+  </body>
+</html>

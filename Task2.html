@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Події на елементах</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .element {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px 20px;
+        border: 2px solid #888;
+        border-radius: 8px;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.3s;
+      }
+      .log {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        max-height: 300px;
+        overflow-y: auto;
+        background: #f9f9f9;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="element" draggable="true">H1 Заголовок</h1>
+    <h2 class="element" draggable="true">H2 Заголовок</h2>
+    <h3 class="element" draggable="true">H3 Заголовок</h3>
+    <b class="element" draggable="true">Жирний текст</b>
+    <i class="element" draggable="true">Курсивний текст</i>
+
+    <div class="log" id="log"></div>
+
+    <script>
+      const logDiv = document.getElementById("log");
+      function log(msg) {
+        const p = document.createElement("p");
+        p.textContent = msg;
+        logDiv.appendChild(p);
+        logDiv.scrollTop = logDiv.scrollHeight;
+      }
+
+      const elements = document.querySelectorAll(".element");
+
+      elements.forEach((el) => {
+        // Флаги для частих подій
+        let mouseMoving = false;
+        let wheelRolling = false;
+        let scrolling = false;
+
+        function resetFlags() {
+          mouseMoving = false;
+          wheelRolling = false;
+          scrolling = false;
+        }
+
+        // onclick
+        el.onclick = () => {
+          log(`${el.tagName}: onclick`);
+          el.style.color = "blue";
+          resetFlags();
+        };
+
+        // ondblclick
+        el.ondblclick = () => {
+          log(`${el.tagName}: ondblclick`);
+          el.style.fontSize = "1.5em";
+          resetFlags();
+        };
+
+        // onmousedown / onmouseup
+        el.onmousedown = () => {
+          log(`${el.tagName}: onmousedown`);
+          el.style.borderColor = "red";
+          resetFlags();
+        };
+        el.onmouseup = () => {
+          log(`${el.tagName}: onmouseup`);
+          el.style.borderColor = "green";
+          resetFlags();
+        };
+
+        // onmouseover / onmouseout
+        el.onmouseover = () => {
+          log(`${el.tagName}: onmouseover`);
+          el.style.backgroundColor = "#eef";
+          resetFlags();
+        };
+        el.onmouseout = () => {
+          log(`${el.tagName}: onmouseout`);
+          el.style.backgroundColor = "";
+          resetFlags();
+        };
+
+        // Часті події: mousemove / wheel / scroll
+        el.onmousemove = () => {
+          if (!mouseMoving) {
+            log(`${el.tagName}: onmousemove`);
+            mouseMoving = true;
+          }
+        };
+        el.onwheel = () => {
+          if (!wheelRolling) {
+            log(`${el.tagName}: onmousewheel`);
+            wheelRolling = true;
+          }
+        };
+        el.onscroll = () => {
+          if (!scrolling) {
+            log(`${el.tagName}: onscroll`);
+            scrolling = true;
+          }
+        };
+
+        // Drag & Drop
+        el.ondragstart = () => {
+          log(`${el.tagName}: ondragstart`);
+          el.style.opacity = 0.5;
+          resetFlags();
+        };
+        el.ondragend = () => {
+          log(`${el.tagName}: ondragend`);
+          el.style.opacity = 1;
+          resetFlags();
+        };
+        el.ondrag = () => {
+          log(`${el.tagName}: ondrag`);
+          resetFlags();
+        };
+        el.ondragenter = () => {
+          log(`${el.tagName}: ondragenter`);
+          el.style.borderStyle = "dashed";
+          resetFlags();
+        };
+        el.ondragleave = () => {
+          log(`${el.tagName}: ondragleave`);
+          el.style.borderStyle = "solid";
+          resetFlags();
+        };
+        el.ondragover = (e) => {
+          e.preventDefault();
+          log(`${el.tagName}: ondragover`);
+          el.style.boxShadow = "0 0 10px #888";
+          resetFlags();
+        };
+        el.ondrop = (e) => {
+          e.preventDefault();
+          log(`${el.tagName}: ondrop`);
+          el.style.boxShadow = "none";
+          resetFlags();
+        };
+      });
+    </script>
+  </body>
+</html>
